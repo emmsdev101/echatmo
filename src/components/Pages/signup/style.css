@@ -34,6 +34,11 @@
 }
 .page-title-signup{
     text-align: center;
-    height: 100px;
+    height: 160px;
     padding-top: 20px;
+}
+.logo-signup{
+    width: 90px;
+    height: 90px;
+    margin-bottom: 5px;
 }

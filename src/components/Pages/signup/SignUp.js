@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Button, Container, Form, FormControl, FormLabel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import logo from './ee.png'
 
 import './style.css'
 
@@ -115,8 +116,8 @@ const SignUp = () => {
         <Container fluid className = 'form-container-signup'>
         <Container className = 'form-container-inner-signup'>
         <Container className = 'page-title-signup'>
-            <h2>Create Account</h2>
-            <p>Provide us your information</p>
+        <img className = 'logo-signup' src = {logo} alt = 'logo'/>
+            <h5>Create Account</h5>
             </Container>
             <Form onSubmit = {(e)=>{signUp(e)}}>
             {!valid?<Alert variant="danger" size = 'sm'>{error}</Alert>:''}

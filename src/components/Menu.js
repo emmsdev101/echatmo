@@ -8,7 +8,7 @@ const Menu = ({action}) => {
     const logOut = () => {
         cookie.remove('username')
         action(false)
-        window.location.reload()
+        window.location.replace('/log-in')
     }
     const closeMenu = () => {
         action(false)

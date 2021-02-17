@@ -1,4 +1,9 @@
 
+.logo{
+    width: 110px;
+    height: 120px;
+    padding-bottom: 10px;
+}
 .form-container{
    height: 100vh;
    padding: 0;
@@ -6,12 +11,11 @@
    display: flex;
    justify-content: center;
    align-items: center;
-   
 }
 .form-container-inner{
     margin: 0;
     width: 350px;
-    height: 550px;
+    height: auto;
     background: rgb(255, 255, 255);
     padding-left: 20px;
     padding-right: 20px;
@@ -30,9 +34,10 @@
 }
 .signup{
     box-shadow: 5px 10px 7px #888888;
+    margin-bottom: 80px;
 }
 .page-title{
     text-align: center;
-    height: 150px;
-    padding-top: 50px;
+    height: 170px;
+    padding-top: 20px;
 }

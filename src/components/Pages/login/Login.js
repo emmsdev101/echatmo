@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {useState} from 'react'
 import Cookies from 'universal-cookie'
 import './style.css'
+import logo from './ee.png'
 const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
 
 
@@ -27,7 +28,7 @@ const Login = () => {
 
     }
     const loginAccout = async (user_data)=> {
-        const request = await fetch(USER_API, {
+        const request = await fetch(USER_API+'login/', {
             method: "POST",
             headers:{"content-type" : "application/json"},
             body: JSON.stringify({
@@ -44,7 +45,6 @@ const Login = () => {
                 setError('Wrong username or password')
                 setValid(false)
             }
-        console.log(data)
         }
         
     }
@@ -69,18 +69,20 @@ const Login = () => {
     return (
         <div fluid className = 'form-container'>
             <Container className = 'form-container-inner'>
+            
             <Container className = 'page-title'>
-                <h2>Login</h2>
-                <p>Login your account</p>
+            <img className = 'logo' src = {logo} alt = 'logo'/>
+                <h5>Login</h5>
                 </Container>
+                <Form onSubmit = {(e)=>{signIn(e)}}>
                 {!valid?
                 <Alert variant = 'danger'>{error}</Alert>:''
                 }
-                <Form onSubmit = {(e)=>{signIn(e)}}>
                     <Form.Label className = 'form-label'>Email</Form.Label>
                     <Form.Control className = 'control' type ='email' value = {email_input} onChange = {(e)=>{putEmail(e)}}></Form.Control>
                     <Form.Label className = 'form-label' >Password</Form.Label>
                     <Form.Control className = 'control' type ='password' value = {passoword_input} onChange = {(e)=>{putPassword(e)}}></Form.Control>
+                    
                     <Button className = 'submit' className ='submit' block varaint = 'primary' type ='submit'>Log in</Button>
                 </Form> 
                 <FormLabel>Don't have an accout yet?</FormLabel>

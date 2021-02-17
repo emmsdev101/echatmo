@@ -75,6 +75,9 @@ html,body {
   height: 50px;
   width: 50px;
 }
+.user-icon:hover{
+  background: rgb(224, 222, 222);
+}
 .appname{
   width:80%;
 }
