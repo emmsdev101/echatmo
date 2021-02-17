@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import Home from './components/Pages/Home';
+import Login from './components/Pages/login/Login';
+import SignUp from './components/Pages/signup/SignUp';
+import Cookies from 'universal-cookie'
+import {useState, useEffect} from 'react'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const cookie = new Cookies()
+  const username = cookie.get('username')
+  const [openFriends, setFriendsOpen] = useState(false)
+
+  const setOpenFriends = (val)=> {
+    alert(val)
+  }
+  return(
+    <>
+    <Router>
+      <Switch>
+        {username === undefined?
+          (<Route exact path = '/' render = {(props)=>
+          <Login {... props} Event = {'hey'}/>}/>):
+         (<Route exact path = '/' render = {(props)=>
+          <Home {... props} setFriendsOpen = {setOpenFriends}/>}/>)}
+        {username === undefined ?
+          (<Route exact path = '/log-in' render = {(props)=>
+            <Login {... props} Event = {'hey'}/>}/>):
+            (<Route exact path = '/log-in' render = {(props)=>
+              <Home {... props} setFriendsOpen = {setOpenFriends}/>}/>)
+      }{username === undefined ?
+        (<Route exact path = '/sign-up' render = {(props)=>
+          <SignUp {... props} Event = {'hey'}/>}/>):
+          (<Route exact path = '/sign-up' render = {(props)=>
+            <Home {... props} setFriendsOpen = {setOpenFriends}/>}/>)
+    }
+      </Switch>
+    </Router>
+    </>
+  )
 }
 
 export default App;
