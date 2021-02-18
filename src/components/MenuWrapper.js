@@ -12,24 +12,18 @@ import './Pages/styles/menuStyle.css'
 const MenuWarpper = ({displayType, setWindow, setOpenMenu,setOpenFriends, setRoom,newMessageRecieved}) => {
   const [menustate, setMenuState] = useState(false)
     const [chat_rooms, setChatRooms] = useState([])
-    const [loading_inbox, setLoadingInbox] = useState(false)
-    const [display, setDisplay] = useState(true)
     const cookies = new Cookies()
     const user_email = cookies.get('username')
-    let curr_index = 0
-
+    
     useEffect(() => {
       const getChatRoom = async () => {
-        setLoadingInbox(true)
         const data = await fetchChatRoom(user_email)
         setChatRooms(data)
         if(data !== null){
             setRoom(data[0])
         }
-        setLoadingInbox(false)
       }
       getChatRoom()
-      
     }, []);
     useEffect(() => {
       const getChatRoom = async () => {

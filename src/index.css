@@ -36,7 +36,7 @@ html,body {
 .MainWrapper{
   background: rgb(255, 255, 255);
   width: 100%;
-  height: 90%;
+  height: 100%;
   display: flex;
   justify-content:center;
   position: absolute;
@@ -47,10 +47,11 @@ html,body {
 .MenuWrapper{
   width: 35%;
   height: 100%;
-  background: rgb(235, 235, 235);
+  background: #e5e7e7;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding: 10px;
+  padding: 0;
+  margin:0;
 }
 .ChatBoxWrapper{
   width: 55%;
@@ -118,18 +119,18 @@ html,body {
   width: 100%;
   height:80%;
   padding-top:10px;
-  padding-right: 10px;
+  padding-right:0;
   overflow: auto;
 }
 .message-box{
   height: 80px;
   padding: 5px;
+  width: 100%;
   display: flex-start;
   flex-direction: column;
   justify-content:center;
   align-items: center;
-  background:rgb(255, 255, 255);
-  margin-bottom: 2px;
+  background:#e5e7e7;
   align-items: center;
   padding-left: 20px;
   padding-top: 10px;

@@ -5,6 +5,7 @@ import MenuWrapper from '../MenuWrapper'
 import Cookies from 'universal-cookie';
 import ChatBoxWrapper from '../ChatBoxWrapper';
 import Friends from '../Friends'
+import { fetchRecipient } from '../../queries/UserQuery';
 
 const CHAT_ROOM_API = 'http://localhost:5000/room/'
 
@@ -20,7 +21,9 @@ const Home = () => {
     const [menu_display, setMenuDisplay] = useState(true)
     const [chat_display, setChatDisplay] = useState(true)
     const [friends_display, setFriendsDisplay] = useState(false)
+    const [user_info, setUser_info] = useState({});
     const size = useWindowSize();
+
 
     const openFriends = (state) => {
       setCurrentWindow(1)
@@ -113,6 +116,13 @@ const Home = () => {
       }
     }
   }, [size]);
+  useEffect(() => {
+    const get_user_info = async()=> {
+      const fetched_user = await fetchRecipient(user_email)
+      setUser_info(fetched_user)
+    }
+    get_user_info()
+  }, []);
   
   const displayChat = ()=> {
     setFriendsDisplay(false)
@@ -131,7 +141,7 @@ const Home = () => {
     return (
         <>
         <div className = 'MainWrapper'>
-        {menustate? <Menu action = {setMenuState}/>:''}
+        {menustate? <Menu userInfo = {user_info} action = {setMenuState}/>:''}
         <MenuWrapper setOpenMenu = {openMenu} displayType = {menu_display} setWindow = {setCurrWindow} setRoom ={switchRoom}setOpenFriends = {openFriends} newMessageRecieved={new_message_recieved}/> 
         <Friends setRoom={setRoom} displayType = {friends_display} CloseMe ={CloseFriendWindow}/>
        <ChatBoxWrapper chat_back_btn = {chat_btn_back} displayType = {chat_display} setWindow = {setCurrWindow} current_window = {current_window} current_room = {current_room} messageRecieved = {newMessageRecieved}/>
