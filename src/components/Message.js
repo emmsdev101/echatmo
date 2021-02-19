@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { FaEllipsisV, FaUserCircle } from "react-icons/fa"
 import Cookies from 'universal-cookie'
 import {seenMember, seenCreator} from '../queries/ChatRoomQuery'
 const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
@@ -63,8 +64,11 @@ const  Message =function({chat_room, setAsCurrentRoom}){
         return(
             <div style = {!seen?{color:'white',background: 'rgb(221, 127, 90)'}: {}}
             className = {selected? 'message-box1': 'message-box'} onClick = {()=>{setCurrentRoom()}}>
+                <FaUserCircle className = 'profile'/>
+                <div className = 'chat_details'>
                 <h6>{user_data.firstname + ' ' + user_data.lastname}</h6>
                 <p></p>
+                </div>
             </div>
         )
     }

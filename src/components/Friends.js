@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form, FormText, Row } from 'react-bootstrap';
-import { FaAngleLeft } from 'react-icons/fa';
+import { FaAngleLeft, FaWindowClose } from 'react-icons/fa';
 import FriendItem from './FriendItem';
 import './Pages/styles/friendsStyle.css'
 import { useEffect } from "react";
@@ -26,12 +26,12 @@ const Friends = ({displayType, CloseMe, setRoom}) => {
     }
     return (
         <div className = {displayType? 'friends-div': 'hide'}>
+            <Button className='btn-back' variant = 'outline' size='sm' onClick = {()=>{CloseMe()}}><FaWindowClose/></Button>
             <div className = 'friends-header'>
-                <Button className='btn-back' variant = 'outline' size='sm' onClick = {()=>{CloseMe()}}><FaAngleLeft className = 'back-icon'/></Button>
                 <h6>To :</h6>
-                <Form.Control size = 'sm' className='search-control'/>
+                <input type = 'text' className='search-control'
+                placeholder = 'Type the name of the person'/>
             </div>
-            <h6>Friends :</h6>
             <hr></hr>
             <div className = 'friend-list-div'>
                {friends.map((friend, id)=>(

@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaUser } from 'react-icons/fa';
 
 const FriendItem = ({friend, setRoom}) => {
     const setChatroom = () => {
@@ -7,8 +8,11 @@ const FriendItem = ({friend, setRoom}) => {
     }
     return (
         <div className = 'friend-item-div' onClick = {()=> {setChatroom()}}>
-            <div className = 'friend-header'></div>
+            <FaUser/>
+            <div className = 'friend-item-header'>
             <h6>{friend.firstname + ' ' + friend.lastname}</h6>
+            </div>
+            
         </div>
     );
 }

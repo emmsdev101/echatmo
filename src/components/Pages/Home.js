@@ -26,7 +26,7 @@ const Home = () => {
 
 
     const openFriends = (state) => {
-      setCurrentWindow(1)
+      setCurrentWindow(2)
       if(isMobile()){
         setFriendsDisplay(true)
         setChatDisplay(false)
@@ -109,12 +109,20 @@ const Home = () => {
       setChatBack(false)
     }else{
       setChatBack(true)
-      if(current_window === 1){
+      if(friends_display){
+        setMenuDisplay(false)
+        setChatDisplay(false)
+      } else{
+        if(current_window === 1){
           displayChat()
-      }else{
+        if(current_window === 2){
+          setFriendsDisplay(true)
+        }
+        }else{
           displayMenu()
       }
     }
+  }
   }, [size]);
   useEffect(() => {
     const get_user_info = async()=> {

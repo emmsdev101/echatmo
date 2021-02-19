@@ -63,7 +63,8 @@ const MenuWarpper = ({displayType, setWindow, setOpenMenu,setOpenFriends, setRoo
           <hr></hr>
           <div className = 'search-div'>
             <div className ='search-box'>
-              <input className = 'search-input' type = 'text'/>
+              <input className = 'search-input' type = 'text' 
+              placeholder = 'Search'/>
               <div className = 'search-btn'><FaSearch className='search'/></div>
             </div>
           </div>

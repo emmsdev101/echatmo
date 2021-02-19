@@ -47,7 +47,7 @@ html,body {
 .MenuWrapper{
   width: 35%;
   height: 100%;
-  background: #e5e7e7;
+  background: #f0f0f0;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   padding: 0;
@@ -73,8 +73,8 @@ html,body {
   padding: 10px;
 }
 .user-icon{
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
 }
 .user-icon:hover{
   background: rgb(224, 222, 222);
@@ -91,10 +91,10 @@ html,body {
 .search-box{
   width: 100%;
   display: flex;
-  border-radius: 10px;
-  background: rgb(202, 199, 199);
-  margin-left: 5px;
-  margin-right: 5px;
+  border-radius: 3px;
+  background: rgb(218, 218, 218);
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .search-btn{
   background: transparent; 
@@ -104,9 +104,9 @@ html,body {
   margin: 20px;
 }
 .search{
-  width: 20px;
-  height: 20px;
-  color: rgb(98, 98, 99);
+  width: 17px;
+  height: 17px;
+  color: rgb(53, 53, 56);
 }
 .search-input{
   width:99%;
@@ -114,6 +114,7 @@ html,body {
   outline:none;
   background: transparent;
   padding: 10px;
+  color: #535151;
 }
 .inbox-div{
   width: 100%;
@@ -122,22 +123,7 @@ html,body {
   padding-right:0;
   overflow: auto;
 }
-.message-box{
-  height: 80px;
-  padding: 5px;
-  width: 100%;
-  display: flex-start;
-  flex-direction: column;
-  justify-content:center;
-  align-items: center;
-  background:#e5e7e7;
-  align-items: center;
-  padding-left: 20px;
-  padding-top: 10px;
-  border-radius: 2px;
-  color: rgb(59, 57, 57);
 
-}
 .new-msg-box{
   width: 80%;
   height: 40px;
@@ -164,9 +150,9 @@ html,body {
   border: transparent;
 }
 .plus{
-  width: 90%;
-  height: 90%;
-  color: rgb(68, 132, 250);
+  width: 70%;
+  height: 70%;
+  color: rgb(49, 50, 51);
 }
 
 .ChatBoxHeader{
@@ -174,10 +160,9 @@ html,body {
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  background: rgb(231, 231, 231);
+  background:rgb(255, 255, 255);
   height: 50px;
-  box-shadow: 1px 1px 8px rgb(196, 194, 194);
-  z-index: 1;
+  color:rgb(49, 50, 51);
 }
 .conversation-name{
   text-align: center;
@@ -258,10 +243,12 @@ html,body {
   align-items: center;
   justify-content: center;
   background: rgb(235, 235, 235);
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
 }
 .input-text{
   width: 100%;
-
 }
 .send-button{
   padding:0;
@@ -286,7 +273,29 @@ html,body {
   display:none;
 }
 .message-box:hover{
-  background: rgb(228, 186, 168);
+  background: rgb(231, 231, 231);
+}
+.message-box{
+  height: 80px;
+  padding: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content:safe;
+  align-items: center;
+  background:#f0f0f0;
+  align-items: center;
+  padding-left: 20px;
+  padding-top: 10px;
+  border-radius: 2px;
+  color: rgb(59, 57, 57);
+}
+.profile{
+  width: 50px;
+  height: 50px;
+}
+.chat_details{
+  margin-left: 20px;
 }
 
 @media screen and (max-width: 600px) {
