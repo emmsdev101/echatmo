@@ -9,6 +9,7 @@ import useChat from '../useChat'
 import React, { useRef, useEffect, useState } from 'react'
 import Cookies from 'universal-cookie'
 import ConvoLoading from './loading/ConvoLoading/ConvoLoading'
+import ChatboxMenu from './Pages/dropmenu/ChatboxMenu'
 const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, chat_back_btn}) => {
    
     const [newMessage, setNewMessage] = React.useState("");
@@ -19,7 +20,7 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
     const [recipient, setRecipient] = React.useState({})
     const {messages, sendMessage, sendRoomId, newMessageRecieved, loading } = useChat()
     const [current_room_id, setCurrentRoomId] = React.useState('')
-    
+    const [chat_menu, setChat_menu] = useState(false);
 
     useEffect(() => {
         scrollToBottom()
@@ -103,14 +104,16 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
 
     return ( 
         <div className = {displayType?'ChatBoxWrapper':'hide' } >
-          <div className = 'ChatBoxHeader'>
+          <div className = 'ChatBoxHeader' onClick ={()=>{if(chat_menu)setChat_menu(false);}}>
           {chat_back_btn ? <div className = 'chat-box-nav'>
           <Button className='btn-back' variant = 'outline' size='sm' onClick = {()=>{setWindow(0)}}><FaAngleLeft className = 'back-icon'/></Button>
           </div>:''}
              <div className = 'conversation-name'><h5 >{recipient.email !== undefined? recipient.firstname+' '+recipient.lastname:''}</h5></div>
-            <div className = 'conv-menu-div'><FaEllipsisV className = 'convo-menu'/></div>
+            <div className = 'conv-menu-div' onClick ={()=>{setChat_menu(true)}}><FaEllipsisV className = 'convo-menu'/>
+            </div>
           </div>
-          <div className='convo-box'>
+          {chat_menu?<ChatboxMenu chat_room = {current_room_id}/>:''}
+          <div className='convo-box' onClick ={()=>{if(chat_menu)setChat_menu(false);}}>
           <div  ref = {scrollBottom}/>
             {isloading?<ConvoLoading/>:convos()}
           </div>

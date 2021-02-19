@@ -22,7 +22,7 @@ html,body {
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 153, 36, 0.5); 
+  background-color: rgba(184, 184, 184, 0.582); 
   opacity: 0.0;
   transition: 0.3s;
   
@@ -56,7 +56,7 @@ html,body {
 .ChatBoxWrapper{
   width: 55%;
   height: 100%;
-  background: rgb(235, 235, 235);
+  background: transparent;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   display: flex;
