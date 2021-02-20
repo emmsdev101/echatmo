@@ -57,6 +57,11 @@ const Home = () => {
     }
     
     const openMenu = (state) => {
+      const get_user_info = async()=> {
+        const fetched_user = await fetchRecipient(user_email)
+        setUser_info(fetched_user)
+      }
+      get_user_info()
       setMenuState(state)
     }
     const CloseFriendWindow = () => {
@@ -123,15 +128,7 @@ const Home = () => {
       }
     }
   }
-  }, [size]);
-  useEffect(() => {
-    const get_user_info = async()=> {
-      const fetched_user = await fetchRecipient(user_email)
-      setUser_info(fetched_user)
-    }
-    get_user_info()
-  }, []);
-  
+  }, [size]);  
   const displayChat = ()=> {
     setFriendsDisplay(false)
     setMenuDisplay(false)
@@ -150,7 +147,7 @@ const Home = () => {
         <>
         <div className = 'MainWrapper'>
         {menustate? <Menu userInfo = {user_info} action = {setMenuState}/>:''}
-        <MenuWrapper setOpenMenu = {openMenu} displayType = {menu_display} setWindow = {setCurrWindow} setRoom ={switchRoom}setOpenFriends = {openFriends} newMessageRecieved={new_message_recieved}/> 
+        <MenuWrapper setFromSearch = {setRoom} setOpenMenu = {openMenu} displayType = {menu_display} setWindow = {setCurrWindow} setRoom ={switchRoom}setOpenFriends = {openFriends} newMessageRecieved={new_message_recieved}/> 
         <Friends setRoom={setRoom} displayType = {friends_display} CloseMe ={CloseFriendWindow}/>
        <ChatBoxWrapper chat_back_btn = {chat_btn_back} displayType = {chat_display} setWindow = {setCurrWindow} current_window = {current_window} current_room = {current_room} messageRecieved = {newMessageRecieved}/>
       </div>

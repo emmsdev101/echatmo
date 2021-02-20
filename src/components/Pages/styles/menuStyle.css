@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
     border-radius: 5px;
-    background:rgb(253, 253, 253);
+    background:rgb(255, 255, 255);
     display: flex-start;
     flex-direction: column;
     justify-content: center;
@@ -10,10 +10,12 @@
     overflow: hidden;
     box-shadow: 1px 1px 8px grey;
     padding-bottom: 40px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .menu-wrapper{
 height:100%;
-width: 60%;
+width: 350px;
 position: absolute;
 z-index: 2;
 }
@@ -21,7 +23,7 @@ z-index: 2;
     display: flex;
     width: 100%;
     margin:0;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid rgb(128, 128, 128);
 }
 .profile-div{
     display: flex-start;
@@ -31,13 +33,13 @@ z-index: 2;
     height: auto;
 }
 .profile-div h3{
-    margin-top: 10px;
+    margin-top: 0;
 }
 
 .user-profile{
-    width: 150px;
-    height: 150px;
-    margin-top:30px;
+    width: 130px;
+    height: 130px;
+    margin-top:5px;
 }
 .profile-btn{
     width: 100%;
@@ -57,25 +59,11 @@ z-index: 2;
     width: 30px;
     margin-right: 10px;
 }
-.age-text{
-    width: 10%;
-    border:0;
-    outline: none;
-    border-bottom: 1px solid grey;
-    text-align: center;
-}
-.gender-text{
-    width: 10%;
-    border: 0;
-    outline: none;
-    border-bottom: 1px solid grey;
-    text-align: center;
-}
 .user-info-div{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
+    height:33px;
     width: auto;
 }
 .user-info-div p{
@@ -87,13 +75,92 @@ z-index: 2;
     border:0;
     height: auto;
     outline: none;
-    border-bottom: 1px solid grey;
     text-align: center;
 }
 .back-btn{
     background: transparent;
     border:0;
     outline: none;
+}
+.info-div{
+    display: flex;
+    justify-content: start;
+    margin-bottom: 5px;
+    font-size: 15px;
+    width: 100%;
+}
+.btn-div{
+    display: center;
+    justify-content: start;
+    margin-bottom: 5px;
+    font-size: 15px;
+    width: 100%;
+}
+.text-field{
+    width: 80%;
+    margin-left:8px;
+    height: 40px;
+    border:none;
+    border-bottom: 1px solid rgb(99, 99, 99);
+    outline: none;
+    background: transparent;
+}
+.edit-form label{
+    padding-top: 10px;
+    color: rgb(90, 92, 92);
+}
+.age-box{
+    width: 50px;
+    margin-left:5px;
+    margin-right: 5px;
+    background: transparent;
+    outline: none;
+    border:1px solid rgb(99, 99, 99);
+    height: 36px;
+    text-align: center;
+}
+.gender-box{
+    width: 80px;
+    margin-left:5px;
+    margin-right: 5px;
+    background: transparent;
+    outline: none;
+    border:1px solid rgb(99, 99, 99);
+    height: 36px;
+}
+.btn-save{
+    background: rgb(71, 151, 241);
+    border:none;
+    outline: none;
+    color:white;
+    margin-top: 20px;
+    height: 50px;
+    width: 100px;
+}
+.btn-cancel{
+    background: rgb(219, 38, 38);
+    border:none;
+    outline: none;
+    color:white;
+    margin-top: 20px;
+    height: 50px;
+    width: 100px;
+    border-radius: 2px;
+}
+
+.edit-form{
+    display: flex;
+    flex-direction: column;
+    background: rgb(255, 255, 255);
+    width:100%;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid rgb(141, 141, 141);
+    border-radius: 5px;
+}
+.edittable{
+
 }
 @media screen and (max-width: 500px){
     .menu-wrapper{

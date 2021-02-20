@@ -16,6 +16,11 @@
     margin-left:5px;
     margin-top: 5px;
 }
+.friend-list-div{
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 80%;
+}
 .friend-item-header h6{
     margin-left: 10px;
 }

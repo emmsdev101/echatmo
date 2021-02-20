@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Button, Container, Form, FormControl, FormLabel } from 'react-bootstrap';
+import { Alert, Button, Container, Form, FormControl, FormLabel, FormCheck, ButtonGroup, FormGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from './ee.png'
 
@@ -11,6 +11,8 @@ const SignUp = () => {
     const [lastname_input, setLnameInput] = useState('')
     const [passoword_input, setPasswordInput] = useState('')
     const [repassoword_input, setRepasswordInput] = useState('')
+    const [gender, setGender] = useState('');
+    const [age, setAge] = useState('')
     const [valid, setValid] = useState(true)
     const [error, setError] = useState('')
     const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
@@ -28,7 +30,8 @@ const SignUp = () => {
                         password: passoword_input,
                         firstname: firstname_input,
                         lastname: lastname_input,
-                        gender: "Male"}
+                        gender: gender,
+                        age:age}
 
                     const created = await createAccount(user_data)
                     if(created){
@@ -65,7 +68,8 @@ const SignUp = () => {
                 password: user_data.password,
                 firstname: user_data.firstname,
                 lastname: user_data.lastname,
-                gender: user_data.gender
+                gender: user_data.gender,
+                age:user_data.age
             })
         })
         if(request.ok){
@@ -105,7 +109,7 @@ const SignUp = () => {
     }
     const validate = () => {
         if(email_input !== '' && firstname_input !== '' && lastname_input !== '' &&
-        passoword_input !== '' && repassoword_input !== ''){
+        passoword_input !== '' && repassoword_input !== '' && gender !== '' && age !== ''){
             return true
         }else{
              return false
@@ -150,8 +154,23 @@ const SignUp = () => {
                 onChange = {(e)=>{putRepassword(e)}}
                 placeholder = 're-type password:'>
             </Form.Control>
+            <div className = 'gender-age-div'>
+                    <Form.Control type = 'number' className = 'age-input' placeholder = 'Age:'
+                        value = {age} onChange = {(e)=>{setAge(e.target.value)}}></Form.Control>
+                <div className = 'gender-div'>
+                    <FormLabel>Gender</FormLabel>
+                    <Form.Check type ='radio'
+                            label = 'Male' name = 'gender' id = '1' onClick = {()=>{setGender('Male')}}/>
+                    <Form.Check type ='radio'
+                        label = 'Fe-Male' name = 'gender' id = '2'onClick = {()=>{setGender('Fe-Male')}}/>
+                </div>
+                    
+                
+            </div>
+            <hr></hr>
             <Button className = 'submit-signup' className ='submit' block varaint = 'primary' type ='submit'>Sign up</Button>
-            </Form>   
+            </Form> 
+            
             <Link to ='/log-in'>Log in here</Link>       
         </Container>
     </Container>
