@@ -5,6 +5,7 @@ import {useState} from 'react'
 import Cookies from 'universal-cookie'
 import './style.css'
 import logo from './ee.png'
+import Loading from '../../loading/loginSignupLoading/Loading'
 const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
 
 
@@ -13,9 +14,11 @@ const Login = () => {
     const [passoword_input, setPasswordInput] = useState('')
     const [valid, setValid] = useState(true)
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false);
 
     const cookies = new Cookies()
     const signIn = (e) => {
+        setLoading(true)
         setValid(true)
         e.preventDefault()
         const user_data = {
@@ -46,12 +49,14 @@ const Login = () => {
                 setValid(false)
             }
         }
+        setLoading(false)
         
     }
     const validate = () => {
         if(email_input === '' || passoword_input === ''){
             setError('Do not leave any fields empty')
             setValid(false)
+            setLoading(false)
             return false
         }else{
             return true
@@ -64,10 +69,8 @@ const Login = () => {
     const putPassword = (e) => {
         setPasswordInput(e.target.value)
     }
-
-
-    return (
-        <div fluid className = 'form-container'>
+    const showForm = () => {
+        return (
             <Container className = 'form-container-inner'>
             
             <Container className = 'page-title'>
@@ -91,7 +94,17 @@ const Login = () => {
                 }}>Signup</Button>
                 
             </Container>
+        )
+    }
+
+
+    return (
+        <>
+        {loading?<Loading/>:''}
+        <div fluid className = 'form-container'>
+            {showForm()}
         </div>
+        </>
     );
 }
 

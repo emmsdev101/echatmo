@@ -1,52 +1,72 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useReducer} from "react"
+import { CloseButton } from "react-bootstrap"
 import { FaEllipsisV, FaUserCircle } from "react-icons/fa"
 import Cookies from 'universal-cookie'
-import {seenMember, seenCreator} from '../queries/ChatRoomQuery'
+import {seenMember, seenCreator, fetchOneRoom} from '../queries/ChatRoomQuery'
 const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
-const  Message =function({chat_room, setAsCurrentRoom}){
+const  Message =function({notification, room, setAsCurrentRoom}){
     const [user_data, setUserData] = useState({})
     const cookies = new Cookies()
     const recipient_email = cookies.get('username') 
     const [selected, setSelected] = useState(false)
     const [seen, setSeen] = useState(false)
     const [isSender, setSender] = useState(false)
+    const [new_room, setNewRoom] = useState({})
     let user_email
     useEffect(() => {
-        if(recipient_email === chat_room.creator){
-            user_email = chat_room.member
-            setSender(false)
-            if(chat_room.seen_member === 1){
-                setSeen(true)
+   
+        const setup = async () => {
+            if(new_room.creator === recipient_email){
+                user_email = new_room.member
+                setSender(true)
+                if(new_room.seen_creator === 1){
+                    setSeen(true)
+                }else{
+                    setSeen(false)
+                }
             }else{
-                setSeen(false)
-            }
-        }else{
-            user_email = chat_room.creator
-            setSender(true)
-            if(chat_room.seen_creator === 1){
-                setSeen(true)
-            }else{
-                setSeen(false)
+                setSender(false)
+                user_email = new_room.creator
+                if(new_room.seen_member === 1){
+                    setSeen(true)
+                }else{
+                    setSeen(false)
+                }
             }
         }
         const getUserInfo = async()=>{
+
             const user_info = await fetchUserData()
             setUserData(user_info)
         }
+    if(new_room.hasOwnProperty('chatroom_id')){
+         setup()
+         getUserInfo()
         
-        getUserInfo()
-    }, []);
+    }
+    }, [new_room]);
+    useEffect(async () => {
+        let newroom = await getNewRoom(room.chatroom_id)
+        setNewRoom(newroom)
+
+    }, [notification]);
+
+    const getNewRoom = async(id) => {
+            const new_fetched_room = await fetchOneRoom(id)
+            return new_fetched_room
+        }
     const setCurrentRoom = ()=> {
-        setAsCurrentRoom(chat_room)
+        setAsCurrentRoom(new_room)
         setSeen(true)
         if(isSender){
-            seenCreator(chat_room.chatroom_id,1)
+            seenCreator(new_room.chatroom_id,1)
         }else{
-            seenMember(chat_room.chatroom_id,1)   
+            seenMember(new_room.chatroom_id,1)   
         }
     }
     const selectMe = (state) => {
-        setSelected(state)
+        setCurrentRoom()
+        ///setSelected(state)
     }
     const fetchUserData = async() => {
         const result = await fetch(USER_API+'info/', {
@@ -63,7 +83,7 @@ const  Message =function({chat_room, setAsCurrentRoom}){
     if(user_data.email !== undefined){
         return(
             <div style = {!seen?{color:'white',background: 'rgb(221, 127, 90)'}: {}}
-            className = {selected? 'message-box1': 'message-box'} onClick = {()=>{setCurrentRoom()}}>
+            className = {selected? 'message-box1': 'message-box'} onClick = {selectMe}>
                 <FaUserCircle className = 'profile'/>
                 <div className = 'chat_details'>
                 <h6>{user_data.firstname + ' ' + user_data.lastname}</h6>

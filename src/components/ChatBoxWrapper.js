@@ -1,4 +1,4 @@
-import { FaEllipsisV,FaEdit, FaHeart, FaHome, FaPlusCircle, FaSearch, FaUser, FaUserCircle, FaAngleLeft } from 'react-icons/fa';
+import { FaEllipsisV,FaEdit, FaHeart, FaHome, FaPlusCircle, FaSearch, FaUser, FaUserCircle, FaArrowLeft } from 'react-icons/fa';
 import { Button, Alert, Col, Container, Form, Row } from 'react-bootstrap';
 import MessageItem from './MessageItem'
 import MyMessageItem from  './MyMessage'
@@ -18,7 +18,7 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
     const user_email = cookies.get('username')
     const [isloading, setLoading] = React.useState(true)
     const [recipient, setRecipient] = React.useState({})
-    const {messages, sendMessage, sendRoomId, newMessageRecieved, loading } = useChat()
+    const {messages, sendMessage, sendRoom, newMessageRecieved, loading } = useChat()
     const [current_room_id, setCurrentRoomId] = React.useState('')
     const [chat_menu, setChat_menu] = useState(false);
 
@@ -30,7 +30,7 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
         if(current_room !== undefined){
           setLoading(true)
             getRecipient(current_room)
-            sendRoomId(current_room.chatroom_id)
+            sendRoom(current_room)
         }
     }, [current_room]);
 
@@ -56,7 +56,6 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
         e.preventDefault()
         const roomExists = await checkRoom(current_room.chatroom_id)
         if(roomExists){
-
           const to_send = {
             body:newMessage,
             reciever: recipient.email}
@@ -69,12 +68,14 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
           sendMessage(to_send)
          
         }else{
-          createRoom(current_room) 
-          const to_send = {
+          if(await createRoom(current_room)){
+            const to_send = {
               body:newMessage,
               reciever: recipient.email
           }
           sendMessage(to_send)
+          }
+         
         }
         setNewMessage('')
       }
@@ -106,7 +107,7 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
         <div className = {displayType?'ChatBoxWrapper':'hide' } >
           <div className = 'ChatBoxHeader' onClick ={()=>{if(chat_menu)setChat_menu(false);}}>
           {chat_back_btn ? <div className = 'chat-box-nav'>
-          <Button className='btn-back' variant = 'outline' size='sm' onClick = {()=>{setWindow(0)}}><FaAngleLeft className = 'back-icon'/></Button>
+          <Button className='btn-back' variant = 'outline' size='sm' onClick = {()=>{setWindow(0)}}><FaArrowLeft className = 'back-icon'/></Button>
           </div>:''}
              <div className = 'conversation-name'><h5 >{recipient.email !== undefined? recipient.firstname+' '+recipient.lastname:''}</h5></div>
             <div className = 'conv-menu-div' onClick ={()=>{setChat_menu(true)}}><FaEllipsisV className = 'convo-menu'/>

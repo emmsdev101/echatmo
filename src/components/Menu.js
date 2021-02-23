@@ -3,14 +3,14 @@ import { Button } from 'react-bootstrap';
 import './Pages/styles/menuStyle.css'
 import Cookies from 'universal-cookie'
 import { faUserCircle } from '@fortawesome/free-regular-svg-icons';
-import {updateUser} from '../queries/UserQuery'
+import {updateUser, fetchRecipient} from '../queries/UserQuery'
 import { FaEdit, FaSignOutAlt, FaUserCircle, FaWindowClose } from 'react-icons/fa';
 const Menu = ({userInfo, action}) => {
     const cookie = new Cookies()
     const email =  cookie.get('username')
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
-    const [age, setAge] = useState();
+    const [age, setAge] = useState(0);
     const [gender, setGender] = useState('');
     const [edit_info, setEdit_info] = useState(false);
 
@@ -39,12 +39,13 @@ const Menu = ({userInfo, action}) => {
             }
             console.log(userData)
             const updated = await updateUser(userData)
-            if(updated){
+            if(updated.ok){
                 alert('Sucess')
-                setFirstname(updated.firstname)
-                setLastname(updated.lastname)
-                setAge(updated.age)
-                setGender(updated.gender)
+                const new_user_data = await fetchRecipient(email)
+                setFirstname(new_user_data.firstname)
+                setLastname(new_user_data.lastname)
+                setAge(new_user_data.age)
+                setGender(new_user_data.gender)
             }else{
                 alert('Something went wrong')
             }
@@ -81,10 +82,8 @@ const Menu = ({userInfo, action}) => {
                     </div>
                 <div className ='info-div'>
                     <label>Gender:</label>
-                    <select className ='text-field' value = {gender==='Male'?'true':'Fe-Male'}>
-                        <option value = 'Male' selected = {gender==='Male'?true:''}>Male</option>
-                        <option value = 'Fe-Male' selected = {gender==='Fe Male'?true:''}>Fe-Male</option>
-                    </select>
+                    <input type = 'text' className ='text-field'
+                    value={gender} readOnly='true'/>
                 </div>
             </div>
             </>
@@ -113,17 +112,32 @@ const Menu = ({userInfo, action}) => {
                 <div className ='info-div'>
                     <label>Gender:</label>
                     <select className ='text-field' onChange = {(e)=>{setGender(e.target.value)}}>
-                        <option value = 'Male' >Male</option>
-                        <option value = 'Fe-Male'>Fe-Male</option>
+                        <option value = 'Male' selected = {gender === 'Male'}>Male</option>
+                        <option value = 'Female' selected = {gender === 'Female'}>Female</option>
                     </select>
                 </div>
-                <div className ='btn-div'>
-                <button value = 'Save' className = 'btn-save' onClick = {()=>{editSubmit()}}>Save</button>
-                <button className = 'btn-cancel' onClick={()=>{setEdit_info(false)}}>Cancel</button>
-                </div> 
             </div>
             </>
         )
+    }
+
+    const saveCancelBtn = ()=> {
+        return(
+            <div className ='btn-div'>
+                <button value = 'Save' className = 'btn-save' onClick = {()=>{editSubmit()}}>Save</button>
+                <button className = 'btn-cancel' onClick={()=>{setEdit_info(false)}}>Cancel</button>
+          </div> 
+        )
+    }
+    const editBtn = () => {
+        return(
+            <>
+            <button className = 'profile-btn' onClick = {()=>{setEdit_info(true)}}>
+                Edit Profile<FaEdit className = 'btn-icon'/></button>
+                <button className = 'profile-btn'onClick = {()=>{logOut()}}>
+               Logout<FaSignOutAlt className = 'btn-icon'/> </button>
+   </>
+    )
     }
     return (
         <div className = 'menu-wrapper'>
@@ -137,11 +151,9 @@ const Menu = ({userInfo, action}) => {
                     {edit_info?editPersonalInfo():personalInfo()}
                     <hr></hr>
                 </div>
-                <button className = 'profile-btn' onClick = {()=>{setEdit_info(true)}}>
-                    <FaEdit className = 'btn-icon'/>Edit Profile</button>
-
-            <button className = 'profile-btn'onClick = {()=>{logOut()}}>
-               <FaSignOutAlt className = 'btn-icon'/> Logout</button>
+                
+            {edit_info?saveCancelBtn():editBtn()}
+            
         </div>
         </div>
         

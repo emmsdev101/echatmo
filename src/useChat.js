@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
-import { updateChatroom } from "./queries/ChatRoomQuery";
+import { seenCreator, seenMember, updateChatroom } from "./queries/ChatRoomQuery";
 
 import Cookies from 'universal-cookie' 
 const socketPort = 'https://serene-hamlet-21553.herokuapp.com/'
@@ -15,8 +15,10 @@ const useChat = () => {
     const [messages, setMessages] = useState([])
     const [newMessageRecieved, setNewMessage] = useState('')
     const [loading, setLoading] = useState(true)
+    const [room, setroom] = useState({});
     
     useEffect(()=>{
+    
         socket.current = io(socketPort, {
             query: {roomId: roomId, username: user_email},
             
@@ -26,8 +28,9 @@ const useChat = () => {
             const recieviedMessage = {...message, sender:message.senderId}
             setMessages((messages) => [...messages, recieviedMessage])
         })
-        socket.current.on('new_message', (msg)=> {
-            setNewMessage(msg)
+        socket.current.on('new_message', (notification)=> {
+           // console.log(notification)
+            setNewMessage(notification)
         })
         return () => {
             socket.current.disconnect()
@@ -46,14 +49,19 @@ const useChat = () => {
                 senderId: user_email,
                 recieverId: message.reciever 
             })
-            setNewMessage(roomId)
+            const notif = {
+                roomId: roomId,
+                date:Date.now()
+            }
+            setNewMessage(notif)
         }else{
             console.log('Error occured')
         }
     }
-    const sendRoomId = async(room_id) => {
-        setRoomId(room_id)
-        if(fetchMessages(room_id)){
+    const sendRoom = async(_room) => {
+        setroom(_room)
+        setRoomId(_room.chatroom_id)
+        if(fetchMessages(_room.chatroom_id)){
             setLoading(false)
         }else{
             console.log('Error')
@@ -73,10 +81,13 @@ const useChat = () => {
         })
         
         if(saved_message.ok){
-            if(updateChatroom(roomId, false)){
+            updateChatroom(room.chatroom_id)
+            if(room.creator === user_email){
+                if(seenMember(roomId, 0)){return true}
                 
-
-                return true
+            }else{
+                if(seenCreator(roomId,0)){return true}
+                
             }
         }else{
             console.log(saved_message.status)
@@ -96,7 +107,7 @@ const useChat = () => {
     }
     
     
-    return {messages, sendMessage, sendRoomId, newMessageRecieved, loading}
+    return {messages, sendMessage, sendRoom, newMessageRecieved, loading}
 
 }
 

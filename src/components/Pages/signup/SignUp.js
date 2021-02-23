@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Button, Container, Form, FormControl, FormLabel, FormCheck, ButtonGroup, FormGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import logo from './ee.png'
+import Loading from '../../loading/loginSignupLoading/Loading'
 
 import './style.css'
 
@@ -16,8 +17,10 @@ const SignUp = () => {
     const [valid, setValid] = useState(true)
     const [error, setError] = useState('')
     const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
+    const [loading, setLoading] = useState(false);
 
     const signUp = async(e) => {
+        setLoading(true)
         e.preventDefault()
         setValid(true)
 
@@ -36,7 +39,6 @@ const SignUp = () => {
                     const created = await createAccount(user_data)
                     if(created){
                         window.location.replace('/log-in')
-                        alert('Sucess')
                     }else{
                         setValid(false)
                         setError('Something went wrong, try again.')
@@ -57,7 +59,7 @@ const SignUp = () => {
         }
 
 
-        
+        setLoading(false)
     }
     const createAccount = async (user_data)=> {
         const request = await fetch(USER_API, {
@@ -112,15 +114,19 @@ const SignUp = () => {
         passoword_input !== '' && repassoword_input !== '' && gender !== '' && age !== ''){
             return true
         }else{
+            setLoading(false)
              return false
         }
     }
 
     return (
+        <>
+        {loading? <Loading/>:''}
         <Container fluid className = 'form-container-signup'>
         <Container className = 'form-container-inner-signup'>
-        <Container className = 'page-title-signup'>
         <img className = 'logo-signup' src = {logo} alt = 'logo'/>
+        <Container className = 'page-title-signup'>
+        
             <h5>Create Account</h5>
             </Container>
             <Form onSubmit = {(e)=>{signUp(e)}}>
@@ -130,13 +136,13 @@ const SignUp = () => {
                  placeholder = 'Email:'>
             </Form.Control>
 
-            <Form.Control className = 'control-signup' type ='text'
+            <Form.Control className = 'control-signup' type ='name'
                 value = {firstname_input}
                 onChange = {(e)=>{putFname(e)}}
                 placeholder = 'Firstname:'>
             </Form.Control>
         
-            <Form.Control className = 'control-signup' type ='text'
+            <Form.Control className = 'control-signup' type ='name'
                 value = {lastname_input}
                 onChange = {(e)=>{putLname(e)}}
                 placeholder = 'Lastname:'>
@@ -158,11 +164,12 @@ const SignUp = () => {
                     <Form.Control type = 'number' className = 'age-input' placeholder = 'Age:'
                         value = {age} onChange = {(e)=>{setAge(e.target.value)}}></Form.Control>
                 <div className = 'gender-div'>
-                    <FormLabel>Gender</FormLabel>
+                    <FormLabel className = 'gender-label'>Gender</FormLabel>
+                    
                     <Form.Check type ='radio'
                             label = 'Male' name = 'gender' id = '1' onClick = {()=>{setGender('Male')}}/>
                     <Form.Check type ='radio'
-                        label = 'Fe-Male' name = 'gender' id = '2'onClick = {()=>{setGender('Fe-Male')}}/>
+                        label = 'Female' name = 'gender' id = '2'onClick = {()=>{setGender('Fe-Male')}}/>
                 </div>
                     
                 
@@ -174,6 +181,7 @@ const SignUp = () => {
             <Link to ='/log-in'>Log in here</Link>       
         </Container>
     </Container>
+    </>
     );
 }
 

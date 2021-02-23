@@ -1,4 +1,5 @@
 const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
+
   export const fetchRecipient = async(remail) => {
     const recipient = await fetch(USER_API+'info/',{
       method: 'POST',
@@ -9,8 +10,13 @@ const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
         email: remail
       })
     })
-    const data = await recipient.json()
-    return data
+    if(recipient.ok){
+      const data = await recipient.json()
+      return data
+    }else{
+      console.log(recipient.status)
+    }
+    
   }
 export const searchUser = async(fullname) => {
     const users = await fetch(USER_API+'search/'+fullname)
@@ -18,7 +24,6 @@ export const searchUser = async(fullname) => {
         const result = await users.json()
         return result
     }else{
-        console.log(users.status)
         return false
     }
 }
@@ -40,7 +45,6 @@ export const updateUser = async(userData)=>{
       const data = updated.json()
       return data
     }else{
-      console.log(updated.status)
       return false
     }
 }

@@ -21,6 +21,14 @@ export const fetchChatRoom = async (user_email)=> {
   }
   
 }
+export const fetchOneRoom =async(room_id) => {
+  const room = await fetch(CHAT_ROOM_API+'fetch/'+room_id)
+  if(room.ok){
+    const result = await room.json()
+    return result
+  }
+  
+}
 export const checkRoom = async(curr_room)=>{
   const result = await fetch(CHAT_ROOM_API+'count/'+curr_room)
   const data = await result.json()
@@ -40,8 +48,12 @@ export const createRoom = async(room)=>{
     type: 'non-group'
    })
   })
-  const data = await create_room.json()
-  return data
+  if(create_room.ok){
+    return true
+  }else{
+    return false
+  }
+ 
 }
 export const updateChatroom = async(room, state) => {
   const to_update =  await fetch(CHAT_ROOM_API, {

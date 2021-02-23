@@ -1,45 +1,48 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import { FaEnvelope,FaEllipsisV,FaEdit, FaHeart, FaHome, FaPlusCircle, FaSearch, FaUser, FaUserCircle } from 'react-icons/fa';
-import { FormControl, InputGroup, FormGroup,Button, Alert, Col, Container, Form, Row } from 'react-bootstrap';
+import { FaEnvelope,FaEllipsisV,FaEdit, FaSearch, FaUserCircle } from 'react-icons/fa';
 import MessageBox from './Message'
 import FriendItem from './FriendItem'
-import CreateMessage from './CreateMessage'
-import useChat from '../useChat'
 import Cookies from 'universal-cookie';
-import {fetchChatRoom, getRoom, setSeen} from '../queries/ChatRoomQuery'
+import {fetchChatRoom,fetchOneRoom, getRoom, setSeen} from '../queries/ChatRoomQuery'
 import {fetchRecipient, searchUser} from '../queries/UserQuery'
 import './Pages/styles/menuStyle.css'
 const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpenFriends, setRoom,newMessageRecieved}) => {
-  const [menustate, setMenuState] = useState(false)
     const [chat_rooms, setChatRooms] = useState([])
     const [search_text, setSearch_text] = useState('');  
     const [peoples, setPeoples] = useState([]);
     const cookies = new Cookies()
     const user_email = cookies.get('username')
-  
-    
+    const [notification, setNofication] = useState('');
+
     useEffect(() => {
       const getChatRoom = async () => {
         const data = await fetchChatRoom(user_email)
         setChatRooms(data)
+
         if(data !== null){
             setRoom(data[0])
         }
       }
       getChatRoom()
     }, []);
-    useEffect(() => {
-      const getChatRoom = async () => {
-        const newdata = await fetchChatRoom(user_email)
-        setChatRooms([])
-        setChatRooms(newdata)
-        if(newdata.length === 1){
-          switchRoom(newdata[0])
+
+    useEffect(() => { 
+      if(typeof(newMessageRecieved)!== 'undefined' && newMessageRecieved !== ''){
+        const new_room = newMessageRecieved.roomId
+        if(!roomExists(new_room)){
+          roomInfo(new_room)
+          setNofication(newMessageRecieved.date)
+        }else{
+          let room_index = searchRoomIndex(new_room)
+          let toreplace = chat_rooms[room_index]
+          let top = chat_rooms.slice(0, room_index)
+          let botoom = chat_rooms.slice(room_index+1, chat_rooms.length)
+          top.unshift(toreplace)
+          let newrooms = top.concat(botoom)
+          setChatRooms(newrooms)
+          setNofication(newMessageRecieved.date)
         }
-      }
-      if(typeof(newMessageRecieved)!== 'undefined' && newMessageRecieved !== ''){  
-        getChatRoom()
       }
     }, [newMessageRecieved]);
     useEffect(() => {
@@ -51,6 +54,29 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
       }
       search()
     }, [search_text]);
+
+    const searchRoomIndex = (new_room) => {
+      let i = 0
+      for(i in chat_rooms){
+        if(new_room === chat_rooms[i].chatroom_id){
+          return parseInt(i)
+        }
+      }
+    }
+    const roomExists = (room_recieved)=>{
+      let i
+      for(i in chat_rooms){
+        if(chat_rooms[i].chatroom_id === room_recieved){
+          return true
+        }
+      }
+      return false
+    }
+  
+    const roomInfo = async(room_recieved) =>{
+      const room = await fetchOneRoom(room_recieved)
+      setChatRooms((chat_rooms)=>[room, ...chat_rooms])
+    }
     const switchRoom = (room) => {
       setRoom(room)
       setWindow(1)
@@ -65,9 +91,10 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
     const displayMessages = ()=> {
       return (
         <>
-        {chat_rooms.map((room, index)=>(
-               <MessageBox id = {index} chat_room = {room} setAsCurrentRoom = {switchRoom} /> 
+        {chat_rooms.map((item, index)=>(
+               <MessageBox id = {index} room = {item} notification = {notification} setAsCurrentRoom = {switchRoom} /> 
             ))}
+
         </>
       )
     }
