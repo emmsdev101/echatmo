@@ -55,7 +55,7 @@ export const createRoom = async(room)=>{
   }
  
 }
-export const updateChatroom = async(room, state) => {
+export const updateChatroom = async(room) => {
   const to_update =  await fetch(CHAT_ROOM_API, {
     method: 'PUT',
     headers:{
@@ -63,7 +63,6 @@ export const updateChatroom = async(room, state) => {
     },
     body: JSON.stringify({
       chatroom_id: room,
-      seen: state
     })
   })
   if(to_update.ok){

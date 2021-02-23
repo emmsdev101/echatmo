@@ -4,20 +4,20 @@ import { FaEllipsisV, FaUserCircle } from "react-icons/fa"
 import Cookies from 'universal-cookie'
 import {seenMember, seenCreator, fetchOneRoom} from '../queries/ChatRoomQuery'
 const USER_API = 'https://serene-hamlet-21553.herokuapp.com/user/'
-const  Message =function({notification, room, setAsCurrentRoom}){
+const  Message =function({notification, room, setAsCurrentRoom, selectedRoom}){
     const [user_data, setUserData] = useState({})
     const cookies = new Cookies()
-    const recipient_email = cookies.get('username') 
+    const user_email = cookies.get('username') 
     const [selected, setSelected] = useState(false)
-    const [seen, setSeen] = useState(false)
+    const [seen, setSeen] = useState(true)
     const [isSender, setSender] = useState(false)
     const [new_room, setNewRoom] = useState({})
-    let user_email
+    let recipient_email 
     useEffect(() => {
    
         const setup = async () => {
-            if(new_room.creator === recipient_email){
-                user_email = new_room.member
+            if(new_room.creator === user_email){
+                recipient_email = new_room.member
                 setSender(true)
                 if(new_room.seen_creator === 1){
                     setSeen(true)
@@ -26,8 +26,8 @@ const  Message =function({notification, room, setAsCurrentRoom}){
                 }
             }else{
                 setSender(false)
-                user_email = new_room.creator
-                if(new_room.seen_member === 1){
+                recipient_email = new_room.creator
+                if(new_room.seen_member== 1){
                     setSeen(true)
                 }else{
                     setSeen(false)
@@ -64,10 +64,6 @@ const  Message =function({notification, room, setAsCurrentRoom}){
             seenMember(new_room.chatroom_id,1)   
         }
     }
-    const selectMe = (state) => {
-        setCurrentRoom()
-        ///setSelected(state)
-    }
     const fetchUserData = async() => {
         const result = await fetch(USER_API+'info/', {
             method: 'POST',
@@ -75,7 +71,7 @@ const  Message =function({notification, room, setAsCurrentRoom}){
                 'Content-type' : 'application/json'
             },
             body: JSON.stringify({
-                email: user_email
+                email: recipient_email
             })
         })
         return await result.json()
@@ -83,7 +79,7 @@ const  Message =function({notification, room, setAsCurrentRoom}){
     if(user_data.email !== undefined){
         return(
             <div style = {!seen?{color:'white',background: 'rgb(221, 127, 90)'}: {}}
-            className = {selected? 'message-box1': 'message-box'} onClick = {selectMe}>
+            className = {selectedRoom===new_room.chatroom_id? 'message-box1': 'message-box'} onClick = {setCurrentRoom}>
                 <FaUserCircle className = 'profile'/>
                 <div className = 'chat_details'>
                 <h6>{user_data.firstname + ' ' + user_data.lastname}</h6>

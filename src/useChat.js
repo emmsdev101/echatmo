@@ -82,13 +82,7 @@ const useChat = () => {
         
         if(saved_message.ok){
             updateChatroom(room.chatroom_id)
-            if(room.creator === user_email){
-                if(seenMember(roomId, 0)){return true}
-                
-            }else{
-                if(seenCreator(roomId,0)){return true}
-                
-            }
+            return true
         }else{
             console.log(saved_message.status)
             return false

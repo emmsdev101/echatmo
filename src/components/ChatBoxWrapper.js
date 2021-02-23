@@ -24,6 +24,11 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
 
     useEffect(() => {
         scrollToBottom()
+        if(current_room.creator === user_email){
+          seenCreator(current_room.chatroom_id, 1)
+        }else{
+          seenMember(current_room.chatroom_id, 1)
+        }
         setLoading(false) 
     }, [messages]);
     useEffect(() => {
@@ -32,6 +37,7 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
             getRecipient(current_room)
             sendRoom(current_room)
         }
+        
     }, [current_room]);
 
     useEffect(() => {
@@ -60,10 +66,11 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
             body:newMessage,
             reciever: recipient.email}
             if(current_room.creator === user_email){
-              seenCreator(current_room.chatroom_id, 0)
-            }else{
+              seenCreator(current_room.chatroom_id, 1)
               seenMember(current_room.chatroom_id, 0)
-              
+            }else{
+              seenMember(current_room.chatroom_id, 1)
+              seenCreator(current_room.chatroom_id, 0)    
             }
           sendMessage(to_send)
          
@@ -125,7 +132,7 @@ const ChatBoxWrapper = ({displayType, current_room, messageRecieved, setWindow, 
                       value = {newMessage}/>
               </Form>
               <button className = 'send-button'
-                onClick = {submitMsg} >Send</button>
+                onClick = {submitMsg} disabled = {newMessage === '' || newMessage === ' '?true:false}>Send</button>
           </div>
         </div>
     );

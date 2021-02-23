@@ -4,8 +4,8 @@ import { FaEnvelope,FaEllipsisV,FaEdit, FaSearch, FaUserCircle } from 'react-ico
 import MessageBox from './Message'
 import FriendItem from './FriendItem'
 import Cookies from 'universal-cookie';
-import {fetchChatRoom,fetchOneRoom, getRoom, setSeen} from '../queries/ChatRoomQuery'
-import {fetchRecipient, searchUser} from '../queries/UserQuery'
+import {fetchChatRoom,fetchOneRoom} from '../queries/ChatRoomQuery'
+import {searchUser} from '../queries/UserQuery'
 import './Pages/styles/menuStyle.css'
 const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpenFriends, setRoom,newMessageRecieved}) => {
     const [chat_rooms, setChatRooms] = useState([])
@@ -14,6 +14,7 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
     const cookies = new Cookies()
     const user_email = cookies.get('username')
     const [notification, setNofication] = useState('');
+    const [current_room, setCurrent_room] = useState('');
 
     useEffect(() => {
       const getChatRoom = async () => {
@@ -22,6 +23,7 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
 
         if(data !== null){
             setRoom(data[0])
+            setCurrent_room(data[0].chatroom_id)
         }
       }
       getChatRoom()
@@ -79,6 +81,7 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
     }
     const switchRoom = (room) => {
       setRoom(room)
+      setCurrent_room(room.chatroom_id)
       setWindow(1)
   
     }
@@ -92,7 +95,9 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
       return (
         <>
         {chat_rooms.map((item, index)=>(
-               <MessageBox id = {index} room = {item} notification = {notification} setAsCurrentRoom = {switchRoom} /> 
+               <MessageBox id = {index} room = {item} notification = {notification}
+               setAsCurrentRoom = {switchRoom}
+               selectedRoom = {current_room}/> 
             ))}
 
         </>
