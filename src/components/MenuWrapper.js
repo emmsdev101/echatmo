@@ -34,7 +34,6 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
         const new_room = newMessageRecieved.roomId
         if(!roomExists(new_room)){
           roomInfo(new_room)
-          setNofication(newMessageRecieved.date)
         }else{
           let room_index = searchRoomIndex(new_room)
           let toreplace = chat_rooms[room_index]
@@ -78,6 +77,7 @@ const MenuWarpper = ({setFromSearch, displayType, setWindow, setOpenMenu,setOpen
     const roomInfo = async(room_recieved) =>{
       const room = await fetchOneRoom(room_recieved)
       setChatRooms((chat_rooms)=>[room, ...chat_rooms])
+      setNofication(newMessageRecieved.date)
     }
     const switchRoom = (room) => {
       setRoom(room)
